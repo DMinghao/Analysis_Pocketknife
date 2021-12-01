@@ -1,3 +1,17 @@
+clear_env <<- function() {
+  rm(list = ls())
+}
+
+clear_mem <<- function() {
+  gc()
+}
+
+clear_all <<- function(restart_R = T) {
+  clear_env()
+  clear_mem() 
+  if(restart_R) .rs.restartR()
+}
+
 load_pkgs <<-
   function(packages = c(),
            basic.packages = c(
