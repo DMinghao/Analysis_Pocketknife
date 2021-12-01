@@ -11,11 +11,6 @@ clear_all <<- function(restart_R = T) {
   clear_mem()
   if (restart_R)
     .rs.restartR()
-  
-  downloader::source_url(
-    "https://raw.githubusercontent.com/DMinghao/Analysis_Pocketknife/main/R/init_env.R",
-    "9d09fc8da3f73bf361929a352738c7bb375f4e64"
-  )
 }
 
 load_pkgs <<-
