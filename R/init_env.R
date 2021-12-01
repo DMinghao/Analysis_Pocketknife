@@ -8,8 +8,14 @@ clear_mem <<- function() {
 
 clear_all <<- function(restart_R = T) {
   clear_env()
-  clear_mem() 
-  if(restart_R) .rs.restartR()
+  clear_mem()
+  if (restart_R)
+    .rs.restartR()
+  
+  downloader::source_url(
+    "https://raw.githubusercontent.com/DMinghao/Analysis_Pocketknife/main/R/init_env.R",
+    "ee7fe891c001c9b731f681158597be744eb3389a"
+  )
 }
 
 load_pkgs <<-
@@ -53,11 +59,15 @@ load_tf_gpu_env <<-
            force_rein_tf_env = F,
            envname = "r_tf_gpu",
            python_version = "3.9") {
-    if (!require("reticulate")) install.packages("reticulate")
-    if (!require("tensorflow")) install.packages("tensorflow")
-    if (!require("keras")) install.packages("keras")
+    if (!require("reticulate"))
+      install.packages("reticulate")
+    if (!require("tensorflow"))
+      install.packages("tensorflow")
+    if (!require("keras"))
+      install.packages("keras")
     
-    if (force_rein_minicon) print("Force reinstalling Miniconda...") 
+    if (force_rein_minicon)
+      print("Force reinstalling Miniconda...")
     
     tryCatch(
       expr = {
@@ -77,13 +87,17 @@ load_tf_gpu_env <<-
         if (force_rein_tf_env) {
           print(paste("Force reinstalling ", envname, " environment..."))
           conda_remove(envname)
-          conda_create(envname = envname,
-                       packages = "tensorflow-gpu",
-                       python_version = python_version)
+          conda_create(
+            envname = envname,
+            packages = "tensorflow-gpu",
+            python_version = python_version
+          )
         } else if (!(envname %in% conda_list()$name)) {
-          conda_create(envname = envname,
-                       packages = "tensorflow-gpu",
-                       python_version = python_version)
+          conda_create(
+            envname = envname,
+            packages = "tensorflow-gpu",
+            python_version = python_version
+          )
         } else {
           print(paste(envname, " is already installed. "))
         }
