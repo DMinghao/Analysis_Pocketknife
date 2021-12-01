@@ -15,7 +15,8 @@ load_pkgs <<-
     if (length(package.list) > 0)
       for (package in package.list)
         detach(package, character.only = TRUE)
-    installed_packages <- packages %in% rownames(installed.packages())
+    installed_packages <-
+      packages %in% rownames(installed.packages())
     if (any(installed_packages == FALSE)) {
       install.packages(packages[!installed_packages], dependencies = T)
     }
@@ -23,8 +24,57 @@ load_pkgs <<-
   }
 
 
-load_helper_func <<- function(select = c()){
-  `%+=%` <- function(e1,e2) eval.parent(substitute(e1 <- e1 + e2))
-  `%-=%` <- function(e1,e2) eval.parent(substitute(e1 <- e1 - e2))
-  `%!in%` <- function(x,y)!('%in%'(x,y))
+load_helper_func <<- function(select = c()) {
+  `%+=%` <- function(e1, e2)
+    eval.parent(substitute(e1 <- e1 + e2))
+  `%-=%` <- function(e1, e2)
+    eval.parent(substitute(e1 <- e1 - e2))
+  `%!in%` <- function(x, y)
+    ! ('%in%'(x, y))
 }
+
+
+load_tf_gpu_env <<-
+  function(force_rein_minicon = F,
+           force_rein_tf_env = F,
+           envname = "r_tf_gpu",
+           python_version = "3.9") {
+    if (!require("reticulate")) install.packages("reticulate")
+    if (!require("tensorflow")) install.packages("tensorflow")
+    if (!require("keras")) install.packages("keras")
+    
+    if (force_rein_minicon) print("Force reinstalling Miniconda...") 
+    
+    tryCatch(
+      expr = {
+        install_miniconda(force = force_rein_minicon)
+      },
+      error = function(e) {
+        if (grepl("Miniconda is already installed", e, fixed = TRUE)) {
+          print("Miniconda is already installed. ")
+        } else {
+          print(e)
+        }
+      },
+      warning = function(w) {
+        print(w)
+      },
+      finally = {
+        if (force_rein_tf_env) {
+          print(paste("Force reinstalling ", envname, " environment..."))
+          conda_remove(envname)
+          conda_create(envname = envname,
+                       packages = "tensorflow-gpu",
+                       python_version = python_version)
+        } else if (!(envname %in% conda_list()$name)) {
+          conda_create(envname = envname,
+                       packages = "tensorflow-gpu",
+                       python_version = python_version)
+        } else {
+          print(paste(envname, " is already installed. "))
+        }
+        use_condaenv(envname)
+      }
+    )
+    
+  }
