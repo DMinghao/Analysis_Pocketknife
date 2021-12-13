@@ -1,7 +1,7 @@
 if (!require(plotly))
   install.packages("plotly")
 
-make_it_spin <<- function(plotly_obj,
+make_it_spin <- function(plotly_obj,
                           eye = list(x = 1.25,
                                      y = 1.25,
                                      z = 1.25),

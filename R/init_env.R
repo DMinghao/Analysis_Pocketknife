@@ -1,5 +1,5 @@
 
-load_pkgs <<-
+load_pkgs <-
   function(packages = c(),
            basic.packages = c(
              "package:stats",
@@ -24,7 +24,7 @@ load_pkgs <<-
     invisible(lapply(packages, library, character.only = TRUE))
   }
 
-load_tf_gpu_env <<-
+load_tf_gpu_env <-
   function(force_rein_minicon = F,
            force_rein_tf_env = F,
            envname = "r_tf_gpu",
