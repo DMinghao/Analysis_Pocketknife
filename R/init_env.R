@@ -1,17 +1,3 @@
-clear_env <<- function() {
-  rm(list = ls())
-}
-
-clear_mem <<- function() {
-  gc()
-}
-
-clear_all <<- function(restart_R = T) {
-  clear_env()
-  clear_mem()
-  if (restart_R)
-    .rs.restartR()
-}
 
 load_pkgs <<-
   function(packages = c(),
@@ -37,17 +23,6 @@ load_pkgs <<-
     }
     invisible(lapply(packages, library, character.only = TRUE))
   }
-
-
-load_helper_func <<- function(select = c()) {
-  `%+=%` <<- function(e1, e2)
-    eval.parent(substitute(e1 <- e1 + e2))
-  `%-=%` <<- function(e1, e2)
-    eval.parent(substitute(e1 <- e1 - e2))
-  `%!in%` <<- function(x, y)
-    ! ('%in%'(x, y))
-}
-
 
 load_tf_gpu_env <<-
   function(force_rein_minicon = F,
