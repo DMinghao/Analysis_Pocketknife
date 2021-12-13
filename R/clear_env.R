@@ -1,5 +1,3 @@
-
-
 rm(list = ls())
 
 gc()
@@ -13,5 +11,3 @@ downloader::source_url(
     "https://raw.githubusercontent.com/DMinghao/Analysis_Pocketknife/main/R/import.R"
   )
 )
-
-.rs.restartR()
