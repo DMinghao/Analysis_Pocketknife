@@ -4,7 +4,7 @@ rm(list = ls())
 
 gc()
 
-# .rs.restartR()
+.rs.restartR()
 
 if (!require(downloader))
   install.packages("downloader")
